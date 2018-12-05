@@ -1,15 +1,15 @@
-// Copyright (c) 2012-2015 The Bitcoin Core developers
+// Copyright (c) 2012-2017 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "key.h"
+#include <key.h>
 
-#include "base58.h"
-#include "script/script.h"
-#include "uint256.h"
-#include "util.h"
-#include "utilstrencodings.h"
-#include "test/test_bitcoin.h"
+#include <base58.h>
+#include <script/script.h>
+#include <uint256.h>
+#include <util.h>
+#include <utilstrencodings.h>
+#include <test/test_bitcoin.h>
 
 #include <string>
 #include <vector>
@@ -20,42 +20,13 @@ static const std::string strSecret1     ("5JJsmJUKbBRt2KJvxdSipMMVBueAypioUxWKaP
 static const std::string strSecret2     ("5JqXG1jtemZ7dVesB2h5MPMGoTVRHhsHA5CiY8Npti1gfAqLLQJ");
 static const std::string strSecret1C    ("KyPu4Y7b3s2pCop9AXrXZzqRR9M53odWAPzQzNVJDn185rGaRQZt");
 static const std::string strSecret2C    ("L1jAZGGJyhekG5U8TGTtCyeUk3vSCjNvK3YiLPZLPE223PZxvfhJ");
-static const CBitcoinAddress addr1 ("QeQm1wAnWYQ6YPQxLGKtiTVGDuMU7giAH8");
-static const CBitcoinAddress addr2 ("QetZmtkmbZMVfhM77Yy5kFk85ubkxJmvaN");
-static const CBitcoinAddress addr1C("QYrLvRbEkkBkEp3v7yrCthrmj3zgE81J4z");
-static const CBitcoinAddress addr2C("QLjSN1pxpkTLY7MvYJZkP2cJYy9RdgV2P7");
+static const std::string addr1 ("QeQm1wAnWYQ6YPQxLGKtiTVGDuMU7giAH8");
+static const std::string addr2 ("QetZmtkmbZMVfhM77Yy5kFk85ubkxJmvaN");
+static const std::string addr1C("QYrLvRbEkkBkEp3v7yrCthrmj3zgE81J4z");
+static const std::string addr2C("QLjSN1pxpkTLY7MvYJZkP2cJYy9RdgV2P7");
 
 
 static const std::string strAddressBad("QHV9Lc3sNHZxwj4Zk6fB38tEmBryq2cBiF");
-
-
-#ifdef KEY_TESTS_DUMPINFO
-void dumpKeyInfo(uint256 privkey)
-{
-    CKey key;
-    key.resize(32);
-    memcpy(&secret[0], &privkey, 32);
-    std::vector<unsigned char> sec;
-    sec.resize(32);
-    memcpy(&sec[0], &secret[0], 32);
-    printf("  * secret (hex): %s\n", HexStr(sec).c_str());
-
-    for (int nCompressed=0; nCompressed<2; nCompressed++)
-    {
-        bool fCompressed = nCompressed == 1;
-        printf("  * %s:\n", fCompressed ? "compressed" : "uncompressed");
-        CBitcoinSecret bsecret;
-        bsecret.SetSecret(secret, fCompressed);
-        printf("    * secret (base58): %s\n", bsecret.ToString().c_str());
-        CKey key;
-        key.SetSecret(secret, fCompressed);
-        std::vector<unsigned char> vchPubKey = key.GetPubKey();
-        printf("    * pubkey (hex): %s\n", HexStr(vchPubKey).c_str());
-        printf("    * address (base58): %s\n", CBitcoinAddress(vchPubKey).ToString().c_str());
-    }
-}
-#endif
-
 
 BOOST_FIXTURE_TEST_SUITE(key_tests, BasicTestingSetup)
 
@@ -102,10 +73,10 @@ BOOST_AUTO_TEST_CASE(key_test1)
     BOOST_CHECK(!key2C.VerifyPubKey(pubkey2));
     BOOST_CHECK(key2C.VerifyPubKey(pubkey2C));
 
-    BOOST_CHECK(addr1.Get()  == CTxDestination(pubkey1.GetID()));
-    BOOST_CHECK(addr2.Get()  == CTxDestination(pubkey2.GetID()));
-    BOOST_CHECK(addr1C.Get() == CTxDestination(pubkey1C.GetID()));
-    BOOST_CHECK(addr2C.Get() == CTxDestination(pubkey2C.GetID()));
+    BOOST_CHECK(DecodeDestination(addr1)  == CTxDestination(pubkey1.GetID()));
+    BOOST_CHECK(DecodeDestination(addr2)  == CTxDestination(pubkey2.GetID()));
+    BOOST_CHECK(DecodeDestination(addr1C) == CTxDestination(pubkey1C.GetID()));
+    BOOST_CHECK(DecodeDestination(addr2C) == CTxDestination(pubkey2C.GetID()));
 
     for (int n=0; n<16; n++)
     {

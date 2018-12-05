@@ -1,17 +1,15 @@
-// Copyright (c) 2009-2016 The Bitcoin Core developers
+// Copyright (c) 2009-2017 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "checkpoints.h"
+#include <checkpoints.h>
 
-#include "chain.h"
-#include "chainparams.h"
-#include "validation.h"
-#include "uint256.h"
+#include <chain.h>
+#include <chainparams.h>
+#include <reverse_iterator.h>
+#include <validation.h>
 
 #include <stdint.h>
-
-#include <boost/foreach.hpp>
 
 static const int nCheckpointSpan = 500;
 
@@ -21,16 +19,15 @@ namespace Checkpoints {
     {
         const MapCheckpoints& checkpoints = data.mapCheckpoints;
 
-        BOOST_REVERSE_FOREACH(const MapCheckpoints::value_type& i, checkpoints)
+        for (const MapCheckpoints::value_type& i : reverse_iterate(checkpoints))
         {
             const uint256& hash = i.second;
             BlockMap::const_iterator t = mapBlockIndex.find(hash);
             if (t != mapBlockIndex.end())
                 return t->second;
         }
-        return NULL;
+        return nullptr;
     }
-
     // Automatically select a suitable sync-checkpoint 
     const CBlockIndex* AutoSelectSyncCheckpoint()
     {
@@ -53,5 +50,6 @@ namespace Checkpoints {
             return false;
         return true;
     }
-	
+
+
 } // namespace Checkpoints

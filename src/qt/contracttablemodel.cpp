@@ -1,14 +1,13 @@
-#include "contracttablemodel.h"
+#include <qt/contracttablemodel.h>
 
-#include "guiutil.h"
-#include "walletmodel.h"
+#include <qt/guiutil.h>
+#include <qt/walletmodel.h>
 
-#include "wallet/wallet.h"
-
-#include <boost/foreach.hpp>
+#include <wallet/wallet.h>
 
 #include <QFont>
 #include <QDebug>
+#include <utility>
 
 struct ContractTableEntry
 {
@@ -53,7 +52,7 @@ public:
         cachedContractTable.clear();
         {
             LOCK(wallet->cs_wallet);
-            BOOST_FOREACH(const PAIRTYPE(std::string, CContractBookData)& item, wallet->mapContractBook)
+            for(const std::pair<std::string, CContractBookData>& item : wallet->mapContractBook)
             {
                 const std::string& address = item.first;
                 const std::string& strName = item.second.name;

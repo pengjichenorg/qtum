@@ -24,10 +24,10 @@ Basic usage resources:
 * [Official Qtum Usage Guide](https://github.com/qtumproject/qtum/wiki/Qtum-Wallet-Tutorial)
 * [Unofficial Qtum staking tutorial](https://steemit.com/qtum/@cryptominder/qtum-staking-tutorial-using-qtum-qt)
 * [Unofficial Qtum staking tutorial on Raspberry Pi](https://steemit.com/qtum/@cryptominder/qtum-staking-tutorial-using-qtumd-on-a-raspberry-pi-3)
+* [Unofficial Qtum staking tutorial on AWS EC2](https://github.com/aaronmboyd/qtum-staking-on-aws-ec2)
 * [Unofficial guide for keeping your wallet safe](https://steemit.com/qtum/@cryptominder/encrypting-backing-up-and-restoring-your-qtum-wallet)
 * [Block explorer](https://explorer.qtum.org)
 * [Unofficial block explorer](https://qtumexplorer.io/)
-* [Unofficial Raspberry Pi Web UI](https://github.com/rpiwalletui/qtum-ui)
 
 Development resources:
 
@@ -208,6 +208,7 @@ License
 
 Qtum is GPLv3 licensed.
 
+
 Development Process
 -------------------
 
@@ -218,6 +219,7 @@ regularly to indicate new official, stable release versions of Qtum.
 The contribution workflow is described in [CONTRIBUTING.md](CONTRIBUTING.md).
 
 Developer IRC can be found on Freenode at #qtum-dev.
+
 
 Testing
 -------
@@ -234,9 +236,9 @@ submit new unit tests for old code. Unit tests can be compiled and run
 (assuming they weren't disabled in configure) with: `make check`. Further details on running
 and extending unit tests can be found in [/src/test/README.md](/src/test/README.md).
 
-There are also [regression and integration tests](/qa) of the RPC interface, written
+There are also [regression and integration tests](/test), written
 in Python, that are run automatically on the build server.
-These tests can be run (if the [test dependencies](/qa) are installed) with: `qa/pull-tester/rpc-tests.py`
+These tests can be run (if the [test dependencies](/test) are installed) with: `test/functional/test_runner.py`
 
 ### Manual Quality Assurance (QA) Testing
 
@@ -244,4 +246,3 @@ Changes should be tested by somebody other than the developer who wrote the
 code. This is especially important for large or high-risk changes. It is useful
 to add a test plan to the pull request description if testing the changes is
 not straightforward.
-
